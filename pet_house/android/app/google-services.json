@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "603910267698-bh0hi4cutoabq9pkdkbdmev549np049d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pet_house",
+            "certificate_hash": "0e2ba817747e7ad934a13a696a30a74d3230cc6c"
+          }
+        },
+        {
           "client_id": "603910267698-cgvdri2lvl47k5426rubbc094g9lrqbn.apps.googleusercontent.com",
           "client_type": 3
         }
