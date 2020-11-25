@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "603910267698",
+    "firebase_url": "https://hackathon-66f90.firebaseio.com",
+    "project_id": "hackathon-66f90",
+    "storage_bucket": "hackathon-66f90.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:603910267698:android:5045938cabc71fbdf46d2b",
+        "android_client_info": {
+          "package_name": "com.example.pet_house"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "603910267698-cgvdri2lvl47k5426rubbc094g9lrqbn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHbRnBuBcr9uuRi_C0W75DXRRiaVUwoyo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "603910267698-cgvdri2lvl47k5426rubbc094g9lrqbn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
