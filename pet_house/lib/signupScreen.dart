@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pet_house/authentication.dart';
-import 'package:pet_house/localization/l10n/language_constants.dart';
 import 'package:pet_house/loginScreen.dart';
 //import 'package:pet_house/tasks.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -10,12 +9,6 @@ import 'main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
-import 'blocks/auth_bloc.dart';
-import 'package:pet_house/blocks/auth_bloc.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:pet_house/loginScreen.dart';
-import 'package:provider/provider.dart';
-import 'main.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -54,8 +47,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var authBloc = Provider.of<AuthBloc>(context);
-
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
@@ -75,7 +66,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 20.0),
                 child: Text(
-                  getTranslated(context, 'signup_here'),
+                  "Signup Here",
                   style: TextStyle(
                     fontSize: 30.0,
                   ),
@@ -89,11 +80,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     children: <Widget>[
                       TextFormField(
                         decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: getTranslated(context, 'email')),
+                            border: OutlineInputBorder(), labelText: "Email"),
                         validator: (_val) {
                           if (_val.isEmpty) {
-                            return getTranslated(context, 'empty_email');
+                            return "Can't be empty";
                           } else {
                             return null;
                           }
@@ -107,14 +97,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         child: TextFormField(
                           decoration: InputDecoration(
                               border: OutlineInputBorder(),
-                              labelText: getTranslated(context, 'password')),
+                              labelText: "Password"),
                           validator: MultiValidator([
                             RequiredValidator(
-                                errorText:
-                                    getTranslated(context, 'empty_password')),
+                                errorText: "This Field Is Required."),
                             MinLengthValidator(6,
-                                errorText:
-                                    getTranslated(context, 'invailed_password'))
+                                errorText: "Minimum 6 Characters Required.")
                           ]),
                           controller: _pass,
                           onChanged: (val) {
@@ -127,11 +115,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         child: TextFormField(
                           decoration: InputDecoration(
                               border: OutlineInputBorder(),
-                              labelText:
-                                  getTranslated(context, 'confirm_password')),
+                              labelText: "Confirm Password"),
                           validator: (val) => MatchValidator(
-                                  errorText: getTranslated(
-                                      context, 'password_notMatch'))
+                                  errorText: 'Passwords do not match')
                               .validateMatch(val, password),
                         ),
                       ),
@@ -143,8 +129,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           "Sign Up",
                         ),
                       ),
-                      SignInButton(Buttons.Facebook,
-                          onPressed: () => authBloc.loginFacebook()),
                       SignInButton(
                         Buttons.Google,
                         onPressed: () => googleSignIn().whenComplete(() async {
@@ -176,7 +160,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       MaterialPageRoute(builder: (context) => LoginScreen()));
                 },
                 child: Text(
-                  getTranslated(context, 'login_here'),
+                  "Login Here",
                 ),
               ),
             ],

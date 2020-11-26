@@ -1,25 +1,14 @@
 import 'package:flutter/material.dart';
-//import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pet_house/authentication.dart';
-import 'package:pet_house/forgot_pasword.dart';
-import 'package:pet_house/localization/l10n/language.dart';
-import 'package:pet_house/localization/l10n/language_constants.dart';
 import 'package:pet_house/main.dart';
 import 'package:pet_house/signupScreen.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-//import 'package:pet_house/threadMain.dart';
-//import 'package:pet_house/tasks.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
-import 'package:provider/provider.dart';
-import 'blocks/auth_bloc.dart';
-import 'main.dart';
+//import 'package:projectname/threadMain.dart';
+//import 'package:projectname/tasks.dart';
 import 'tasks.dart';
-import 'dart:async';
-import 'package:pet_house/blocks/auth_bloc.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_signin_button/button_list.dart';
-import 'package:flutter_signin_button/button_view.dart';
+
+import 'main.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -27,28 +16,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  StreamSubscription<FirebaseUser> loginStateSubscription;
-
   String email;
   String password;
-
-  // add localization
-  void _changeLanguage(Language language) async {
-    Locale _locale = await setLocale(language.languageCode);
-    MyApp.setLocale(context, _locale);
-  }
-
-  @override
-  void initState() {
-    var authBloc = Provider.of<AuthBloc>(context, listen: false);
-    loginStateSubscription = authBloc.currentUser.listen((fbUser) {
-      if (fbUser != null) {
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => MyHomePage()));
-      }
-    });
-    super.initState();
-  }
 
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
@@ -57,13 +26,6 @@ class _LoginScreenState extends State<LoginScreen> {
       formkey.currentState.save();
       signin(email, password, context).then((value) {
         if (value != null) {
-          inputData1();
-          profileSet();
-          //add user to database so that errors don't result
-          Firestore.instance
-              .collection('User-Database')
-              .document(uid)
-              .setData({'key': 1});
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -76,90 +38,103 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var authBloc = Provider.of<AuthBloc>(context);
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        actions: <Widget>[
-          // drop menue to select lang
-          DropdownButton<Language>(
-            underline: SizedBox(),
-            icon: Icon(
-              Icons.language,
-              color: Colors.white,
-            ),
-            onChanged: (Language language) {
-              _changeLanguage(language);
-            },
-            items: Language.languageList()
-                .map<DropdownMenuItem<Language>>(
-                  (e) => DropdownMenuItem<Language>(
-                    value: e,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        Text(
-                          e.flag,
-                          style: TextStyle(fontSize: 30),
-                        ),
-                        Text(e.name)
-                      ],
-                    ),
-                  ),
-                )
-                .toList(),
-          ),
-        ],
-        title: Text(getTranslated(context, 'title')),
-        centerTitle: true,
-      ),
       body: Center(
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              ClipRRect(
-                borderRadius: BorderRadius.all(
-                    Radius.circular(20.0)), //add border radius here
-                child: Container(
-                  height: 250.0,
-                  width: 250.0,
-                  child: Image.asset(
-                    'images/logo/logo.jpeg',
-                    
-                  ), //add image location here
+              FlutterLogo(
+                size: 50.0,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 20.0),
+                child: Text(
+                  "Login Here",
+                  style: TextStyle(
+                    fontSize: 30.0,
+                  ),
                 ),
               ),
-              
               Container(
                 width: MediaQuery.of(context).size.width * 0.90,
                 child: Form(
                   key: formkey,
                   child: Column(
                     children: <Widget>[
-                      
-                  
-                      
-                      
+                      TextFormField(
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(), labelText: "Email"),
+                        validator: MultiValidator([
+                          RequiredValidator(
+                              errorText: "This Field Is Required"),
+                          EmailValidator(errorText: "Invalid Email Address"),
+                        ]),
+                        onChanged: (val) {
+                          email = val;
+                        },
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 15.0),
+                        child: TextFormField(
+                          obscureText: true,
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: "Password"),
+                          validator: MultiValidator([
+                            RequiredValidator(
+                                errorText: "Password Is Required"),
+                            MinLengthValidator(6,
+                                errorText: "Minimum 6 Characters Required"),
+                          ]),
+                          onChanged: (val) {
+                            password = val;
+                          },
+                        ),
+                      ),
+                      RaisedButton(
+                        // passing an additional context parameter to show dialog boxs
+                        onPressed: login,
+                        color: Colors.green,
+                        textColor: Colors.white,
+                        child: Text(
+                          "Login",
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
-              SignInButton(
-                Buttons.Google,
+              MaterialButton(
+                padding: EdgeInsets.zero,
                 onPressed: () => googleSignIn().whenComplete(() async {
-                  FirebaseUser user = await FirebaseAuth.instance.currentUser();
+                  //FirebaseUser user = await FirebaseAuth.instance.currentUser();
+
                   //print('The user ID is');
                   //print(user.uid); //testing to see what's passed
 
-                  inputData1(); //this gets the user id
+                  inputData1();
 
-                  if (user != null) {
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => MyHomePage()));
-                  }
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => MyHomePage()));
                 }),
+                child: Image(
+                  image: AssetImage('assets/signin.png'),
+                  width: 200.0,
+                ),
               ),
-              
+              SizedBox(
+                height: 10.0,
+              ),
+              InkWell(
+                onTap: () {
+                  // send to login screen
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => SignUpScreen()));
+                },
+                child: Text(
+                  "Sign Up Here",
+                ),
+              ),
             ],
           ),
         ),

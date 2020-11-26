@@ -50,8 +50,6 @@ Future<bool> googleSignIn() async {
         .document(user.uid)
         .setData({'key': 1});
 
-   
-
     return Future.value(true);
   }
 }

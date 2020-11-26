@@ -100,7 +100,7 @@ class _WritePost extends State<WritePost> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Write Your Poem'),
+        title: Text('Post Your Poems'),
         centerTitle: true,
         actions: <Widget>[
           FlatButton(
@@ -185,17 +185,18 @@ class _WritePost extends State<WritePost> {
                               });
                             },
                             items: <String>[
+                              'All',
                               'General',
-                              'Free Verse',
-                              'Haiku',
-                              'Blank Verse',
-                              'Narrative',
-                              'Epic',
-                              'Lyric',
-                              'Rhyme',
-                              'Romanticism',
-                              'Shakespearean',
-                              'ABC'
+                              'Dogs',
+                              'Cats',
+                              'Fish',
+                              'Rabbit',
+                              'Birds',
+                              'Hamster',
+                              'Horse',
+                              'Ferret',
+                              'Hedgehog',
+                              'Sheep'
                             ].map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,

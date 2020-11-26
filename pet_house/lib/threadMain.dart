@@ -78,16 +78,16 @@ class _ThreadMain extends State<ThreadMain> {
               items: <String>[
                 'All',
                 'General',
-                'Free Verse',
-                'Haiku',
-                'Blank Verse',
-                'Narrative',
-                'Epic',
-                'Lyric',
-                'Rhyme',
-                'Romanticism',
-                'Shakespearean',
-                'ABC'
+                'Dogs',
+                'Cats',
+                'Fish',
+                'Rabbit',
+                'Birds',
+                'Hamster',
+                'Horse',
+                'Ferret',
+                'Hedgehog',
+                'Sheep'
               ].map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
